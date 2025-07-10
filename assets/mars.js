@@ -1,7 +1,9 @@
-import * as BABYLON from "https://cdn.skypack.dev/babylonjs";
-import "https://cdn.skypack.dev/babylonjs-loaders";
-import * as CANNON from "https://cdn.skypack.dev/cannon-es"; // Use `cannon-es`, not `cannon`
-import { CannonJSPlugin } from "https://cdn.skypack.dev/@babylonjs/core/Physics/Plugins/cannonJSPlugin";
+import * as BABYLON from 'babylonjs';
+import 'babylonjs-loaders'; 
+import * as CANNON from 'cannon'; 
+import { CannonJSPlugin } from '@babylonjs/core/Physics/Plugins/cannonJSPlugin.js';
+
+
 
 
 let rover = null; // Global reference
