@@ -1,4 +1,5 @@
 {
+  "homepage": "https://godfatherc08.github.io/Kairos_SP1",
   "name": "kairos",
   "version": "1.0.0",
   "description": "Mars Rover",
@@ -8,13 +9,11 @@
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist"
-
   },
   "keywords": [
     "perseverance",
     "rover"
   ],
-  "homepage": "https://godfatherc08.github.io/Kairos_sp1",
   "author": "Chimaobi",
   "license": "ISC",
   "devDependencies": {

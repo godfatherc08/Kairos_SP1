@@ -1,7 +1,9 @@
-import * as BABYLON from "https://cdn.skypack.dev/babylonjs";
-import "https://cdn.skypack.dev/babylonjs-loaders";
-import * as CANNON from "https://cdn.skypack.dev/cannon-es"; // Use `cannon-es`, not `cannon`
-import { CannonJSPlugin } from "https://cdn.skypack.dev/@babylonjs/core/Physics/Plugins/cannonJSPlugin";
+import * as BABYLON from 'babylonjs';
+import 'babylonjs-loaders'; 
+import * as CANNON from 'cannon'; 
+import { CannonJSPlugin } from '@babylonjs/core/Physics/Plugins/cannonJSPlugin.js';
+
+
 
 
 let rover = null; // Global reference
@@ -15,7 +17,8 @@ const createScene = () => {
    scene.enablePhysics(new BABYLON.Vector3(0, -3.71, 0), new CannonJSPlugin(true, 60, CANNON));
   
 
-  const camera = new BABYLON.ArcRotateCamera("roverCamera", -Math.PI/1, Math.PI/5, 200, BABYLON.Vector3.Zero(), scene);
+  const camera = new BABYLON.ArcRotateCamera("roverCamera", -Math.PI/1, Math.PI/5, 800, BABYLON.Vector3.Zero(), scene);
+ // camera.upperRadiusLimit = 550
   camera.upperBetaLimit = Math.PI / 2.2;
   //camera.lowerBetaLimit = 
 
@@ -40,105 +43,118 @@ skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
 skyboxMaterial.reflectionTexture = skyboxTexture;
 skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
 
-const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 1000 }, scene);
+const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 4000 }, scene);
 skybox.material = skyboxMaterial;
-skybox.infiniteDistance = true;
+//skybox.infiniteDistance = true;
 
   const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0.5, 0.1, 0), scene);
+  light.intensity = 0.7;
+
+
 const ground = BABYLON.MeshBuilder.CreateGroundFromHeightMap("ground", 
                 "https://raw.githubusercontent.com/godfatherc08/Kairos/refs/heads/main/another%20one.jpg", 
                 { 
-                    width: 500, 
-                    height: 500, 
+                    width: 3000, 
+                    height: 3000, 
                     subdivisions: 100,
-                    minHeight: 0, 
-                    maxHeight: 4
+                    minHeight: 40, 
+                    maxHeight: 70
                 }, scene);
                 
             const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
             const groundTexture = new BABYLON.Texture("https://raw.githubusercontent.com/godfatherc08/Kairos/main/Mars_Map_main.jpg", scene);
             groundMat.diffuseTexture = groundTexture;
             ground.material = groundMat;
-            
-            // Wait for ground to be ready
+
+            const largeGroundMat = new BABYLON.StandardMaterial("largeGroundMat");
+largeGroundMat.diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/godfatherc08/Kairos/main/Mars_Map_main.jpg");
+
+            ground.diffuseColor = new BABYLON.Color3(0.6, 0.3, 0.1);
+            ground.specularColor = new BABYLON.Color3(0, 0, 0); 
+          const largeGround = BABYLON.MeshBuilder.CreateGroundFromHeightMap("largeGround", "https://assets.babylonjs.com/environments/villageheightmap.png" /* url to height map */, 
+    {width:4000, height:4000, subdivisions: 300, minHeight:100, maxHeight: 300});
+largeGround.material = largeGroundMat;
+largeGround.position.y = -30;
+
+ground.position.y = 0;
+     largeGround.onReady = () => {
+  largeGround.physicsImpostor = new BABYLON.PhysicsImpostor(
+    largeGround,
+    BABYLON.PhysicsImpostor.MeshImpostor,
+    { mass: 0, friction: 3, restitution: 0.5 },
+    scene
+  )};
             ground.onReady = () => {
-                ground.physicsImpostor = new BABYLON.PhysicsImpostor(
-                    ground,
-                    BABYLON.PhysicsImpostor.BoxImpostor,
-                    { mass: 0, friction: 2, restitution: 0 },
-                    scene
-                );
-            };
-            
-
- // ground.material.wireframe = true;
-
-BABYLON.SceneLoader.LoadAssetContainerAsync(
-  "https://raw.githubusercontent.com/godfatherc08/Kairos/main/",
-  "Perseverance.glb",
-  scene
-).then(container => {
-  container.addAllToScene();
-
-  const roverRoot = new BABYLON.Mesh("roverRoot", scene);
-  const roverParts = container.meshes.filter(m =>
-    m.isVerticesDataPresent("position") && !m.name.startsWith("__root__")
-  );
-
-  roverParts.forEach(part => {
-    part.setParent(roverRoot);
-  });
-
-  //scale the rover
-  roverRoot.scaling = new BABYLON.Vector3(20, 20, 20);
-  roverRoot.position = new BABYLON.Vector3(0, 5, 0);
-
-  // Apply physics to rover
-  roverRoot.physicsImpostor = new BABYLON.PhysicsImpostor(
-    roverRoot,
+  ground.physicsImpostor = new BABYLON.PhysicsImpostor(
+    ground,
     BABYLON.PhysicsImpostor.BoxImpostor,
-    { mass: 100, friction: 1.0, restitution: 0.1 },
+    { mass: 0, friction: 3, restitution: 0.5 },
     scene
   );
 
+  BABYLON.SceneLoader.LoadAssetContainerAsync(
+    "https://raw.githubusercontent.com/godfatherc08/Kairos/main/",
+    "Perseverance.glb",
+    scene
+  ).then(container => {
+    container.addAllToScene();
+
+
+    const roverRoot = new BABYLON.Mesh("roverRoot", scene);
+    const roverParts = container.meshes.filter(m =>
+      m.isVerticesDataPresent("position") && !m.name.startsWith("__root__")
+    );
+
+    roverParts.forEach(part => {
+      part.setParent(roverRoot);
+    });
+
+    // Scale and position
+    roverRoot.scaling = new BABYLON.Vector3(60, 60, 60);
+    roverRoot.position = new BABYLON.Vector3(0, 78, 0); // ⬆️ higher above the terrain
+
+    // Physics
+    roverRoot.physicsImpostor = new BABYLON.PhysicsImpostor(
+      roverRoot,
+      BABYLON.PhysicsImpostor.BoxImpostor,
+      { mass: 100, friction: 1.0, restitution: 0.1 },
+      scene
+    );
+    scene.onBeforeRenderObservable.add(() => {
+  if (!rover) return;
+
+  const limit = 1000; // edge
+  rover.position.x = BABYLON.Scalar.Clamp(rover.position.x, -limit, limit);
+  rover.position.z = BABYLON.Scalar.Clamp(rover.position.z, -limit, limit);
+});
+
+    rover = roverRoot;
+    rover.showBoundingBox = true
+
+    // Controls
+    window.addEventListener("keydown", (e) => {
+      if (!rover || !rover.physicsImpostor) return;
+      switch (e.key.toLowerCase()) {
+        case "w":
+          rover.translate(BABYLON.Axis.Z, -0.5, BABYLON.Space.LOCAL);
+          return;
+        case "s":
+          rover.translate(BABYLON.Axis.Z, 0.5, BABYLON.Space.LOCAL);
+          return;
+        case "a":
+          rover.rotate(BABYLON.Axis.Y, -0.05, BABYLON.Space.LOCAL);
+          return;
+        case "d":
+          rover.rotate(BABYLON.Axis.Y, 0.05, BABYLON.Space.LOCAL);
+          return;
+      }
+    });
+
+    console.log("Rover loaded and physics applied.");
+  });
+
   
-
-  rover = roverRoot;
-
-  window.addEventListener("keydown", (e) => {
-  if (!rover || !rover.physicsImpostor) return;
-
-  switch (e.key.toLowerCase()) {
-    case "w":
-      rover.translate(BABYLON.Axis.Z, -0.5, BABYLON.Space.LOCAL);
-      return;
-    case "s":
-      rover.translate(BABYLON.Axis.Z, 0.5, BABYLON.Space.LOCAL);
-      return;
-    case "a":
-      rover.rotate(BABYLON.Axis.Y, -0.05, BABYLON.Space.LOCAL);
-      return;
-    case "d":
-      rover.rotate(BABYLON.Axis.Y, 0.05, BABYLON.Space.LOCAL);
-      return;
-  }
-
- /* if (!impulse.equals(BABYLON.Vector3.Zero())) {
-    const contactPoint = rover.getAbsolutePosition().add(new BABYLON.Vector3(0, -1, 0)); // slightly above center
-    powerSystem.batteryLevel = Math.max(0, powerSystem.batteryLevel - 0.2);
-  }*/
-
-  console.log("X:", rover.getDirection(BABYLON.Axis.X).toString());
-console.log("Y:", rover.getDirection(BABYLON.Axis.Y).toString());
-console.log("Z:", rover.getDirection(BABYLON.Axis.Z).toString());
-
-});
-
-
-  console.log("Rover physics set.");
-});
-
-
+};
 
   return scene;
 }; 
