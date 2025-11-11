@@ -11,15 +11,15 @@ KAIROS (Kinetically Adaptive Intelligent Rover Operating System) is an ongoing M
 
 🧠 Features Implemented
 
-- 🌄 Mars terrain generated from height maps
-- 📦 Realistic physics using `CannonJSPlugin`
-- 🛰️ Simulated telemetry panel for position, speed, heat, and power
-- 🚗 Manual movement controls (WASD)
-- 🪐 Mars skybox with realistic texture
+- Mars terrain generated from height maps
+- Realistic physics using `CannonJSPlugin`
+- Simulated telemetry panel for position, speed, heat, and power
+- Manual movement controls (WASD)
+- Mars skybox with realistic texture
 
 ---
 
-🎯 Roadmap
+ Roadmap
 
 | Status | Feature                        | Description                                |
 |--------|--------------------------------|--------------------------------------------|
@@ -34,7 +34,7 @@ KAIROS (Kinetically Adaptive Intelligent Rover Operating System) is an ongoing M
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 - Renderer: Babylon.js
 - Physics: Cannon.js (via `@babylonjs/core/Physics/Plugins/cannonJSPlugin`)
