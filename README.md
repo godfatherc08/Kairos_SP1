@@ -1,15 +1,15 @@
-# KAIROS: Adaptive Mars Rover Simulation 🚀
+# KAIROS: Adaptive Mars Rover Simulation 
 
 KAIROS (Kinetically Adaptive Intelligent Rover Operating System) is an ongoing Mars rover simulation project built using [Babylon.js](https://www.babylonjs.com/), [Cannon.js](https://github.com/schteppe/cannon.js), and web technologies. It simulates key aspects of a Mars rover's movement, terrain interaction, and telemetry monitoring, with upcoming features like autonomous navigation and AI-based decision-making.
 
 ---
 
- 🌍 Live Preview
+  Live Preview
 [https://godfatherc08.github.io/Kairos_SP1/]
 
 ---
 
-🧠 Features Implemented
+ Features Implemented
 
 - Mars terrain generated from height maps
 - Realistic physics using `CannonJSPlugin`
