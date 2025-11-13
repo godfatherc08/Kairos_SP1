@@ -1,4 +1,4 @@
-import{G as r}from"./index-ByUZCAUT.js";const e="passPixelShader",a=`varying vec2 vUV;uniform sampler2D textureSampler;
+import{G as r}from"./index-Bk_dwadO.js";const e="passPixelShader",a=`varying vec2 vUV;uniform sampler2D textureSampler;
 #define CUSTOM_FRAGMENT_DEFINITIONS
 void main(void) 
 {gl_FragColor=texture2D(textureSampler,vUV);}`;r.ShadersStore[e]||(r.ShadersStore[e]=a);const t={name:e,shader:a};export{t as passPixelShader};

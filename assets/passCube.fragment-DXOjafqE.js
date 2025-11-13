@@ -1,4 +1,4 @@
-import{G as t}from"./index-ByUZCAUT.js";const e="passCubePixelShader",r=`varying vUV: vec2f;var textureSamplerSampler: sampler;var textureSampler: texture_cube<f32>;
+import{G as t}from"./index-Bk_dwadO.js";const e="passCubePixelShader",r=`varying vUV: vec2f;var textureSamplerSampler: sampler;var textureSampler: texture_cube<f32>;
 #define CUSTOM_FRAGMENT_DEFINITIONS
 @fragment
 fn main(input: FragmentInputs)->FragmentOutputs {var uv: vec2f=input.vUV*2.0-1.0;
